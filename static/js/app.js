@@ -84,6 +84,24 @@ function buildChart(){
   };
   
   Plotly.newPlot('bubble', data, layout);
+  buildMetadata();
 };
+//Build Metadata
+function buildMetadata(){
+    //find sample by id
+    var subjectID = d3.select('#selDataset').node().value;
+    let targetSample = sampleData.metadata.find(subject => subject.id == subjectID);
+    var sampleMetadata = d3.select('#sample-metadata');
+    var table = sampleMetadata.append('table');
+    table.attr('class', 'table table-striped')
+    Object.entries(targetSample).forEach(([key, value]) => {
+      var row = table.append('tr');
+      var cell = row.append('td');
+      cell.text(`${key}:`);
+      var cell = row.append('td');
+      cell.text(value);
+    })
+  console.log(targetSample);
+}
 // Initialize the dashboard
 init();
