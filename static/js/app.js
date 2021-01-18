@@ -25,7 +25,6 @@ function init() {
 
    Recommended function names:
     buildGauge()
-    buildMetadata()
 */
 function optionChanged(){
   buildChart();
@@ -102,6 +101,10 @@ function buildMetadata(){
       cell.text(value);
     })
   console.log(targetSample);
+}
+//Gauge Chart
+function buildGauge(){
+  
 }
 // Initialize the dashboard
 init();
