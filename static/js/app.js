@@ -1,34 +1,30 @@
-var sampleData = {}
 // Grab a reference to the dropdown select element
 var dropDown = d3.select('#selDataset');
-//Event Listener
-dropDown.on('change', optionChanged)
+//Event Listener for dropdown
+dropDown.on('change', optionChanged);
 
 function init() {
   // Grab a reference to the dropdown select element
   // Use the list of sample names to populate the select options
   d3.json("/samples").then((data) => {
-    sampleData = data;
-    // your-code-here
-    sampleData.names.forEach(name => {
+    data.names.forEach(name => {
       d3.select('#selDataset').append('option').attr('value', name).text(name);
     })
-    buildChart();
-    buildGauge();
-    buildMetadata();
+    buildChart(data);
+    buildGauge(data);
+    buildMetadata(data);
     // Use the first sample from the list to build the initial plots
   });
 };
+//callback function for change event on dropdown select
 function optionChanged(){
-  buildChart();
-  buildGauge();
-  buildMetadata();
+  init();
 };
 //Function to build charts
-function buildChart(){
+function buildChart(data){
   //find sample by id
   var subjectID = d3.select('#selDataset').node().value;
-  let targetSample = sampleData.samples.find(sample => sample.id == subjectID);
+  let targetSample = data.samples.find(sample => sample.id == subjectID);
   //get top 10
   var top10otuIds = targetSample.otu_ids.slice(0, 10).map(item => 'otu' + item);
   var top10Samples = targetSample.sample_values.slice(0, 10);
@@ -46,8 +42,9 @@ function buildChart(){
     }]    
   };
   var layout = {
-    title: 'Top 10 OTUs found Individual',
-    barmode: 'stack'
+    //title: 'Top 10 OTUs found Individual',
+    barmode: 'stack',
+    width: '100%'
   };
   var barChartData = [
     trace1
@@ -72,7 +69,7 @@ function buildChart(){
   
   var layout = {
     title: 'OTU Sample',
-    showlegend: true,
+    showlegend: false,
     height: 600,
     width: 1200
   };
@@ -80,10 +77,10 @@ function buildChart(){
   Plotly.newPlot('bubble', data, layout);
 };
 //Build Metadata
-function buildMetadata(){
+function buildMetadata(data){
     //find sample by id
     var subjectID = d3.select('#selDataset').node().value;
-    let targetSample = sampleData.metadata.find(subject => subject.id == subjectID);
+    let targetSample = data.metadata.find(subject => subject.id == subjectID);
     var sampleMetadata = d3.select('#sample-metadata');
     sampleMetadata.html('');
     var table = sampleMetadata.append('table');
@@ -98,13 +95,13 @@ function buildMetadata(){
   //console.log(targetSample);
 }
 //Gauge Chart
-function buildGauge(){
+function buildGauge(data){
   var subjectID = d3.select('#selDataset').node().value;
-  let targetSample = sampleData.metadata.find(subject => subject.id == subjectID);
+  let targetSample = data.metadata.find(subject => subject.id == subjectID);
   var gauge = d3.select('#gauge');
   var washFreq = targetSample.wfreq;
   console.log(washFreq);
-  //gaauge
+  //gauge
   var trace1 =
     {
       domain: { x: [0, 1], y: [0, 1] },
@@ -138,7 +135,7 @@ function buildGauge(){
       trace1
     ]
   
-  var layout = { width: 475, height: 350, margin: { t: 0, b: 0 } };
+  var layout = { width: 500, height: 400, margin: { t: 0, b: 0 } };
   Plotly.newPlot('gauge', data, layout);
 }
 // Initialize the dashboard
