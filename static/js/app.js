@@ -3,6 +3,8 @@ var dropDown = d3.select('#selDataset');
 //Event Listener for dropdown
 dropDown.on('change', optionChanged);
 
+
+
 function init() {
   // Grab a reference to the dropdown select element
   // Use the list of sample names to populate the select options
@@ -14,6 +16,8 @@ function init() {
     buildGauge(data);
     buildMetadata(data);
     // Use the first sample from the list to build the initial plots
+  var testNode = d3.select('#sample-metadata table');
+  console.log(testNode);
   });
 };
 //callback function for change event on dropdown select
@@ -22,7 +26,7 @@ function optionChanged(){
 };
 //Function to build charts
 function buildChart(data){
-  //find sample by id
+  //find sample by id. Node: returns first element in a selection
   var subjectID = d3.select('#selDataset').node().value;
   let targetSample = data.samples.find(sample => sample.id == subjectID);
   //get top 10
@@ -70,8 +74,8 @@ function buildChart(data){
   var layout = {
     title: 'OTU Sample',
     showlegend: false,
-    height: 600,
-    width: 1200
+    //height: 600,
+    //width: 1200
   };
   
   Plotly.newPlot('bubble', data, layout);
