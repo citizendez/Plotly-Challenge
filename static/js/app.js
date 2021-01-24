@@ -3,11 +3,10 @@ var dropDown = d3.select('#selDataset');
 //Event Listener for dropdown
 dropDown.on('change', optionChanged);
 
-
-
 function init() {
   // Grab a reference to the dropdown select element
   // Use the list of sample names to populate the select options
+  //call function to load charts with selected data
   d3.json("/samples").then((data) => {
     data.names.forEach(name => {
       d3.select('#selDataset').append('option').attr('value', name).text(name);
@@ -15,9 +14,6 @@ function init() {
     buildChart(data);
     buildGauge(data);
     buildMetadata(data);
-    // Use the first sample from the list to build the initial plots
-  var testNode = d3.select('#sample-metadata table');
-  console.log(testNode);
   });
 };
 //callback function for change event on dropdown select
@@ -26,10 +22,11 @@ function optionChanged(){
 };
 //Function to build charts
 function buildChart(data){
-  //find sample by id. Node: returns first element in a selection
-  var subjectID = d3.select('#selDataset').node().value;
+  //find sample by id. Node: returns selected value
+  var subjectID = d3.select('#selDataset').property('value');
+  //find selected value by id
   let targetSample = data.samples.find(sample => sample.id == subjectID);
-  //get top 10
+  //get top 10 add string for each item to label bar chart
   var top10otuIds = targetSample.otu_ids.slice(0, 10).map(item => 'otu' + item);
   var top10Samples = targetSample.sample_values.slice(0, 10);
   //console.log(top10Samples);
@@ -83,7 +80,7 @@ function buildChart(data){
 //Build Metadata
 function buildMetadata(data){
     //find sample by id
-    var subjectID = d3.select('#selDataset').node().value;
+    var subjectID = d3.select('#selDataset').property('value');
     let targetSample = data.metadata.find(subject => subject.id == subjectID);
     var sampleMetadata = d3.select('#sample-metadata');
     sampleMetadata.html('');
