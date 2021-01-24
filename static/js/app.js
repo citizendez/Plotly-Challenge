@@ -22,7 +22,7 @@ function optionChanged(){
 };
 //Function to build charts
 function buildChart(data){
-  //find sample by id. Node: returns selected value
+  //find sample by id.: returns selected value
   var subjectID = d3.select('#selDataset').property('value');
   //find selected value by id
   let targetSample = data.samples.find(sample => sample.id == subjectID);
@@ -97,7 +97,7 @@ function buildMetadata(data){
 }
 //Gauge Chart
 function buildGauge(data){
-  var subjectID = d3.select('#selDataset').node().value;
+  var subjectID = d3.select('#selDataset').property('value');
   let targetSample = data.metadata.find(subject => subject.id == subjectID);
   var gauge = d3.select('#gauge');
   var washFreq = targetSample.wfreq;
