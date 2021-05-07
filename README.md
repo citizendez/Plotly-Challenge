@@ -12,7 +12,7 @@
 - Create a bubble chart that displayes each sample.  
 - Display sample metadata, an individual's demographic information.  
 
-## Incorperae Gauge Chart  
+## Incorperate Gauge Chart  
 - Adapt a guage chart to plot weekly washing frequncy of individual selected in drop down.  
 - Chart updates when new id is selected.    
 
